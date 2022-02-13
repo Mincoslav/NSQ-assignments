@@ -246,6 +246,11 @@ alter table "categoriesToGenresLookup"
     -- modifying data #5
 
     -- querying data #1 (all books for an author)
+    SELECT
+        public.authors.name, public.books.title, public.books.isbn
+    FROM authors INNER JOIN "booksToAuthorsLookup" on authors.pk = "booksToAuthorsLookup"."FK_author"
+    INNER JOIN books on books.pk = "booksToAuthorsLookup"."FK_book"
+    WHERE 6 = "booksToAuthorsLookup"."FK_author";
 
 
     -- querying data #2 (total of an order)
