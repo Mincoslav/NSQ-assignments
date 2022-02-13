@@ -258,4 +258,12 @@ alter table "categoriesToGenresLookup"
         round(cast(SUM(public.books.price * public."booksToOrdersLookup".quantity) as numeric),2::integer)
     FROM public.orders INNER JOIN "booksToOrdersLookup" on orders.pk = "booksToOrdersLookup"."FK_order"
     INNER JOIN books on books.pk = "booksToOrdersLookup"."FK_book"
-    WHERE "booksToOrdersLookup"."FK_order" = 1
+    WHERE "booksToOrdersLookup"."FK_order" = 1;
+
+
+    -- querying data #3 (Total sales to a customer)
+    SELECT
+        round(cast(SUM(public.books.price * public."booksToOrdersLookup".quantity) as numeric),2::integer) as total_Sales, sum(public."booksToOrdersLookup".quantity) as no_Of_Books, count(DISTINCT public."booksToOrdersLookup"."FK_order") as no_Of_Orders
+    FROM public.orders JOIN "booksToOrdersLookup" on orders.pk = "booksToOrdersLookup"."FK_order"
+    JOIN books on books.pk = "booksToOrdersLookup"."FK_book"
+    WHERE public.orders."FK_Customer" = 1;
