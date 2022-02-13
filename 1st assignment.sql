@@ -1,4 +1,4 @@
-
+-- Question 3
 /*
  Table, row, key creation
  */
@@ -232,3 +232,25 @@ alter table "categoriesToGenresLookup"
 /*
  Table, row, key creation end
  */
+
+-- Question 4
+
+    -- modifying data #1
+
+    -- modifying data #2
+
+    -- modifying data #3
+
+    -- modifying data #4
+
+    -- modifying data #5
+
+    -- querying data #1 (all books for an author)
+
+
+    -- querying data #2 (total of an order)
+    SELECT
+        round(cast(SUM(public.books.price * public."booksToOrdersLookup".quantity) as numeric),2::integer)
+    FROM public.orders INNER JOIN "booksToOrdersLookup" on orders.pk = "booksToOrdersLookup"."FK_order"
+    INNER JOIN books on books.pk = "booksToOrdersLookup"."FK_book"
+    WHERE "booksToOrdersLookup"."FK_order" = 1
