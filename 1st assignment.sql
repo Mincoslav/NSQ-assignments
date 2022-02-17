@@ -303,7 +303,7 @@ alter table "categoriesToGenresLookup"
     JOIN books on books.pk = "booksToOrdersLookup"."FK_book"
     WHERE public.orders."FK_Customer" = 1;
 
-    -- querying data #4 (Books categorized as neither Science Fiction nor Fantasy)
+-- FIXME: not sure if I understand the question correctly but looks like its wrong since it display all the books we have -- querying data #4 (Books categorized as neither Science Fiction nor Fantasy)
     select * from books inner join "booksToCategoriesLookup" bTCL on books.pk = bTCL."FK_book"
     inner join categories c on bTCL."FK_category" = c.pk
     where c.name != 'Fantasy' and c.name != 'Science Fiction';
@@ -313,11 +313,11 @@ alter table "categoriesToGenresLookup"
     from books inner join "booksToGenresLookup" bTGL on books.pk = bTGL."FK_book"
     inner join  genres g on bTGL."FK_genre" = g.pk group by g.pk;
 
-    -- querying data #6 (Categories with no sub-categories)
+-- !!!!!!!!!!!!!!!!!!!! FIXME: can not be validated sine there is no enough data?    -- querying data #6 (Categories with no sub-categories)
     select * from categories inner join "categoriesToGenresLookup" cTGL on categories.pk = cTGL."FK_category"
     inner join genres g on cTGL."FK_genre" = g.pk where  g.pk = null;
 
--- !!!!!!!!!!!!!!!!!!!! FIXME: does not work properly , -- querying data #7 (ISBN number of books with more than one author)
+-- !!!!!!!!!!!!!!!!!!!! FIXME: does not work properly (see on the table that there is more then one) , -- querying data #7 (ISBN number of books with more than one author)
     select  public.books.isbn from books inner join "booksToAuthorsLookup" on books.pk = "booksToAuthorsLookup"."FK_book"
     inner join authors a on "booksToAuthorsLookup"."FK_author" = a.pk where books.pk = a.pk;
 
