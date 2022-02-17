@@ -339,5 +339,17 @@ alter table "categoriesToGenresLookup"
         (select pk, books.title, sum(bTOL.quantity)as totalSold from "booksToOrdersLookup" bTOL
             full outer join books on  bTOL."FK_book" = books.pk group by "FK_book", title, pk) as pttS
     order by sold DESC limit 5;
-    
 
+    -- querying data #11 ( Best-selling genres: The top 3 selling genres ordered in descending order by number of sales. )
+
+    select  name, totalSold as sold from
+        (select "FK_genre", sum(bTOL.quantity)as totalSold from "booksToOrdersLookup" bTOL
+            inner join "booksToGenresLookup" as bTOG on bTOG."FK_book" = bTOL."FK_book" group by "FK_genre") as bTbTtS
+        inner join genres on genres.pk = bTbTtS."FK_genre" order by sold DESC limit  3;
+
+    -- querying data #12 ( All science fiction books. )
+    SELECT books.title, catLookup."FK_categoryChild" from categories
+    inner join "categoriesLookup" as catLookup on categories.pk = catLookup."FK_categoryChild" or categories.pk = catLookup."FK_categoryParent"
+    inner join "booksToCategoriesLookup" on "booksToCategoriesLookup"."FK_category" = catLookup."FK_categoryChild"
+    inner join "books" on "books".pk = "booksToCategoriesLookup"."FK_book"
+        where categories.name = 'Science Fiction'
