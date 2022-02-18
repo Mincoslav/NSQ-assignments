@@ -303,7 +303,7 @@ alter table "categoriesToGenresLookup"
     JOIN books on books.pk = "booksToOrdersLookup"."FK_book"
     WHERE public.orders."FK_Customer" = 1;
 
--- FIXME: not sure if I understand the question correctly but looks like its wrong since it display all the books we have -- querying data #4 (Books categorized as neither Science Fiction nor Fantasy)
+ -- querying data #4 (Books categorized as neither Science Fiction nor Fantasy)
     select * from books inner join "booksToCategoriesLookup" bTCL on books.pk = bTCL."FK_book"
     inner join categories c on bTCL."FK_category" = c.pk
     where c.name != 'Fantasy' and c.name != 'Science Fiction';
@@ -313,13 +313,13 @@ alter table "categoriesToGenresLookup"
     from books inner join "booksToGenresLookup" bTGL on books.pk = bTGL."FK_book"
     inner join  genres g on bTGL."FK_genre" = g.pk group by g.pk;
 
--- !!!!!!!!!!!!!!!!!!!! FIXME: can not be validated sine there is no enough data?    -- querying data #6 (Categories with no sub-categories)
-    select * from categories inner join "categoriesToGenresLookup" cTGL on categories.pk = cTGL."FK_category"
-    inner join genres g on cTGL."FK_genre" = g.pk where  g.pk = null;
+  -- querying data #6 (Categories with no sub-categories)
+    select * from categories where FK_categoryType != 3;
 
--- !!!!!!!!!!!!!!!!!!!! FIXME: does not work properly (see on the table that there is more then one) , -- querying data #7 (ISBN number of books with more than one author)
-    select  public.books.isbn from books inner join "booksToAuthorsLookup" on books.pk = "booksToAuthorsLookup"."FK_book"
-    inner join authors a on "booksToAuthorsLookup"."FK_author" = a.pk where books.pk = a.pk;
+ -- querying data #7 (ISBN number of books with more than one author)
+    select public.books.isbn  from books inner join "booksToAuthorsLookup" on books.pk = "booksToAuthorsLookup"."FK_book"
+    inner join authors a on "booksToAuthorsLookup"."FK_author" = a.pk  join
+    (select "FK_book", count("FK_book") as bookCount from "booksToAuthorsLookup" GROUP BY "FK_book") as authorsCount on authorsCount."FK_book" = "booksToAuthorsLookup"."FK_book" where authorsCount.bookCount > 1 group by public.books.isbn;
 
     -- querying data #8 (ISBN numbers of books that sold at least X copies (you decide the value for X) )
         -- let x denote 10 copies
