@@ -314,10 +314,10 @@ alter table "categoriesToGenresLookup"
     inner join  genres g on bTGL."FK_genre" = g.pk group by g.pk;
 
   -- querying data #6 (Categories with no sub-categories)
-    select * from categories where FK_categoryType != 3;
+    select * from categories where "FK_categoryType" != 3;
 
  -- querying data #7 (ISBN number of books with more than one author)
-    select public.books.isbn  from books inner join "booksToAuthorsLookup" on books.pk = "booksToAuthorsLookup"."FK_book"
+    select public.books.isbn from books inner join "booksToAuthorsLookup" on books.pk = "booksToAuthorsLookup"."FK_book"
     inner join authors a on "booksToAuthorsLookup"."FK_author" = a.pk  join
     (select "FK_book", count("FK_book") as bookCount from "booksToAuthorsLookup" GROUP BY "FK_book") as authorsCount on authorsCount."FK_book" = "booksToAuthorsLookup"."FK_book" where authorsCount.bookCount > 1 group by public.books.isbn;
 
