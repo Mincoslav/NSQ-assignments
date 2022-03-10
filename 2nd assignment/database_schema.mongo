@@ -1,0 +1,119 @@
+const database = '2ND_ASSIGNMENT';
+
+// // Create a new database.
+use(database);
+
+
+// // Create new collections.
+// db.createCollection('books');
+// db.createCollection('categories');
+// db.createCollection('orders');
+// db.createCollection('customers');
+
+
+// Schema validators:
+//CUSTOMER
+db.runCommand({
+	collMod: "categories",
+	$jsonSchema: {
+		required: ["name", "address"],
+		properties: {
+			name: {
+				bsonType: "string"
+			},
+			address: {
+				bsonType: "string"
+			}
+		}
+	}
+});
+
+//ORDERS
+db.runCommand({
+	collMod: "orders",
+	$jsonSchema: {
+		required: ["customer_id", "books", "total_price", "date", "time"],
+		properties: {
+			customer_id: {
+				bsonType: "string"
+			},
+			books: {
+				bsonType: "array"
+			},
+			total_price: {
+				bsonType: "double"
+			},
+			date: {
+				bsonType: "date"
+			},
+			time: {
+				bsonType: "timestamp"
+			}
+		}
+	}
+});
+
+//BOOKS
+db.runCommand({
+	collMod: "books",
+	$jsonSchema: {
+		required: [
+			"title",
+			"price",
+			"quantity",
+			"isbn",
+			"authors",
+			"genres",
+			"characters",
+			"categories"
+		],
+		properties: {
+			title: {
+				bsonType: "string"
+			},
+			price: {
+				bsonType: "double"
+			},
+			quantity: {
+				bsonType: "int"
+			},
+			isbn: {
+				bsonType: "string"
+			},
+			authors: {
+				bsonType: "array"
+			},
+			genres: {
+				bsonType: "array"
+			},
+			characters: {
+				bsonType: "array"
+			},
+			categories: {
+				bsonType: "array"
+			}
+		}
+	}
+});
+
+//CATEGORIES
+db.runCommand({
+	collMod: "categories",
+	validator: {
+		$jsonSchema: {
+			required: ["name", "sub_categories", "parent_categories"],
+			properties: {
+				name: {
+					bsonType: "string",
+					description: "must be a string and is required"
+				},
+				sub_categories: {
+					bsonType: "array"
+				},
+				parent_categories: {
+					bsonType: "array"
+				}
+			}
+		}
+	}
+});
