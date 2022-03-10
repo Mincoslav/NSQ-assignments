@@ -1,0 +1,64 @@
+// MongoDB Playground
+// To disable this template go to Settings | MongoDB | Use Default Template For Playground.
+// Make sure you are connected to enable completions and to be able to run a playground.
+// Use Ctrl+Space inside a snippet or a string literal to trigger completions.
+
+// Select the database to use.
+use("2ND_ASSIGNMENT");
+
+// The drop() command destroys all data from a collection.
+// Make sure you run it against the correct database and collection.
+db.categories.find();
+
+db.categories.insertMany([
+	{
+		name: "Biography",
+		sub_categories: [
+			"Historical",
+			"Film, Television & Music",
+			"True Crime",
+			"Medical, Legal & Social Sciences",
+			"Sport"
+		],
+		parent_categories: ["Biography"]
+	},
+	{
+		name: "Food & Drink",
+		sub_categories: [
+			"National & International",
+			"Vegetarian & Vegan",
+			"Baking"
+		],
+		parent_categories: ["Food & Drink"]
+	},
+	{
+		name: "Fiction",
+		sub_categories: ["Historical", "Fantasy", "Science Fiction"],
+		parent_categories: ["Fiction"]
+	},
+	{
+		name: "Historical",
+		sub_categories: ["Royalty", "Britain", "1701 - 1900"],
+		parent_categories: ["Historical"]
+	},
+	{
+		name: "Fantasy",
+		sub_categories: ["Epic", "Sword & Sorcery", "Myths & Legends"],
+		parent_categories: ["Fantasy"]
+	},
+	{
+		name: "Science Fiction",
+		sub_categories: ["Alternative History", "Hard Science Fiction"],
+		parent_categories: ["Science Fiction"]
+	},
+	{
+		name: "Film, Television & Music",
+		sub_categories: ["Actors & Entertainers", "Music", "Theatre Performers"],
+		parent_categories: ["Film, Television & Music"]
+	},
+	{
+		name: "Sport",
+		sub_categories: ["Football", "Basketball"],
+		parent_categories: ["Sport"]
+	}
+]);
