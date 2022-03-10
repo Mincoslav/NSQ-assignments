@@ -64,6 +64,7 @@ db.runCommand({
 				"title",
 				"price",
 				"quantity",
+				"pages",
 				"isbn",
 				"authors",
 				"genres",
@@ -78,6 +79,9 @@ db.runCommand({
 					bsonType: "double"
 				},
 				quantity: {
+					bsonType: "int"
+				},
+				pages: {
 					bsonType: "int"
 				},
 				isbn: {
