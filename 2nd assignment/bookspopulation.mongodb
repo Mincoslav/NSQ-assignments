@@ -1,7 +1,7 @@
 db.books.insertMany([
 	{
 		title: "Hello",
-		price: 37,
+		price: 37.99,
 		quantity: 1300,
 		pages: 100,
 		isbn: "888-3-16-128430-0",
@@ -12,7 +12,7 @@ db.books.insertMany([
 	},
 	{
 		title: "There",
-		price: 56,
+		price: 56.99,
 		quantity: 2145,
 		pages: 350,
 		isbn: "978-3-16-148410-0",
@@ -23,7 +23,7 @@ db.books.insertMany([
 	},
 	{
 		title: "Let it go",
-		price: 75,
+		price: 75.99,
 		quantity: 3009,
 		pages: 178,
 		isbn: "908-3-16-128430-0",
@@ -34,7 +34,7 @@ db.books.insertMany([
 	},
 	{
 		title: "Iron card",
-		price: 100,
+		price: 100.99,
 		quantity: 857,
 		pages: 369,
 		isbn: "765-3-16-122430-0",
@@ -45,7 +45,7 @@ db.books.insertMany([
 	},
 	{
 		title: "New me",
-		price: 205,
+		price: 205.99,
 		quantity: 300,
 		pages: 100,
 		isbn: "009-3-16-128430-0",
@@ -56,7 +56,7 @@ db.books.insertMany([
 	},
 	{
 		title: "Dark Sun",
-		price: 101,
+		price: 101.99,
 		quantity: 98,
 		pages: 170,
 		isbn: "873-3-16-128430-0",
@@ -67,7 +67,7 @@ db.books.insertMany([
 	},
 	{
 		title: "River",
-		price: 365,
+		price: 365.99,
 		quantity: 500,
 		pages: 266,
 		isbn: "978-3-16-128430-0",
@@ -78,7 +78,7 @@ db.books.insertMany([
 	},
 	{
 		title: "It",
-		price: 133,
+		price: 133.99,
 		quantity: 145,
 		pages: 575,
 		isbn: "123-3-16-128430-0",

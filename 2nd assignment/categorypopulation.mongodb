@@ -60,5 +60,10 @@ db.categories.insertMany([
 		name: "Sport",
 		sub_categories: ["Football", "Basketball"],
 		parent_categories: ["Sport"]
-	}
+	},
+	{
+		name: "Hockey",
+		sub_categories: [],
+		parent_categories: ["Sport"]
+	},
 ]);
