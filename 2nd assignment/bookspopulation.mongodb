@@ -1,0 +1,90 @@
+db.Books.insertMany([
+	{
+		title: "Hello",
+		price: 37,
+		quantity: 1300,
+		pages: 100,
+		isbn:  "888-3-16-128430-0",
+		authors: ["Sam", "Peter"],
+		genres: ["Romantic"],
+		characters: ["Angels", "Pirates"],
+		categories: ["6229d594c605f979adbfedc6"]
+	},
+	{
+title: "There",
+		price: 56,
+		quantity: 2145,
+		pages: 350,
+		isbn:  "978-3-16-148410-0",
+		authors: ["Simon", "John"],
+		genres: ["Humour"],
+		characters: ["Aliens"],
+		categories: ["6229d594c605f979adbfedc7"]
+	},
+	{
+title: "Let it go",
+		price: 75,
+		quantity: 3009,
+		pages: 178,
+		isbn:  "908-3-16-128430-0",
+		authors: ["Sam"],
+		genres: ["Non-Romantic"],
+		characters: ["Clones"],
+		categories: ["6229d594c605f979adbfedc4"]
+	},
+	{
+title: "Iron card",
+		price: 100,
+		quantity: 857,
+		pages: 369,
+		isbn:  "765-3-16-122430-0",
+		authors: ["Dawid"],
+		genres: ["Humour"],
+		characters: ["Pirates"],
+		categories: ["6229dd278da172f2ce6704ab"]
+	},
+	 {
+title: "New me",
+		price: 205,
+		quantity: 300,
+		pages: 100,
+		isbn:  "009-3-16-128430-0",
+		authors: ["Peter"],
+		genres: ["Humour"],
+		characters: ["Corporations"],
+		categories: ["6229dd278da172f2ce6704ab"]
+	},
+	{
+	title: "Dark Sun",
+		price: 101,
+		quantity: 98,
+		pages: 170,
+		isbn:  "873-3-16-128430-0",
+		authors: ["Dawid"],
+		genres: ["Mistery"],
+		characters: ["Angels"],
+		categories: ["6229d594c605f979adbfedc6"]
+	},
+	{
+	title: "River",
+		price: 365,
+		quantity: 500,
+		pages: 266,
+		isbn:  "978-3-16-128430-0",
+		authors: ["Simon", "Peter"],
+		genres: ["Horror"],
+		characters: ["Devils"],
+		categories: ["6229d594c605f979adbfedc6"]
+	},
+	{
+	title: "It",
+		price: 133,
+		quantity: 145,
+		pages: 575,
+		isbn:  "123-3-16-128430-0",
+		authors: ["Max", "John"],
+		genres: ["Thriller"],
+		characters: ["Clones"],
+		categories: ["6229d594c605f979adbfedc7"]
+	}
+])
