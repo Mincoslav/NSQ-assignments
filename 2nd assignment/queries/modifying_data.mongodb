@@ -22,6 +22,8 @@ session.commitTransaction();
 db.customers.updateOne({name: "Jim Jones", address: "Banegårdsgade 2, 8700 Horsens"}, {$set: {address:"Banegårdsgade 3, 8700 Horsens"}});
 
 // 3. Add an existing author to a book.
+let existingAuthor = db.books.findOne({isbn:"908-3-16-128430-0"}).authors[0]
+db.books.updateOne({isbn:"765-3-16-122430-0"}, {$addToSet:{authors:existingAuthor}})
 
 // 4. Retire the "Space Opera" category and assign all books from that category to the parent category.
 // Don't assume you know the id of the parent category.
