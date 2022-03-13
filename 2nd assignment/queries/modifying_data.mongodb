@@ -4,18 +4,22 @@ use("2ND_ASSIGNMENT");
 let session = db.getMongo().startSession();
 session.startTransaction();
 
-let bookInOrder = { title: "Iron card", quantity:2 };
-let book = db.books.findOne({title: bookInOrder.title})
-let order = db.orders.insertOne({ 
-    customer_id: "622dd7a40466b05f33587626",
-    books: [{bookID: book._id.toString(), quantity:bookInOrder.quantity}],
-    total_price: (book.price * bookInOrder.quantity),
-    date: new Date()
- }).insertedId;
-db.books.updateOne({ _id: book._id }, {$inc: {quantity: -bookInOrder.quantity}});
+let bookInOrder = { title: "Iron card", quantity: 2 };
+let book = db.books.findOne({ title: bookInOrder.title });
+let order = db.orders.insertOne({
+	customer_id: "622dd7a40466b05f33587626",
+	books: [{ bookID: book._id.toString(), quantity: bookInOrder.quantity }],
+	total_price: book.price * bookInOrder.quantity,
+	date: new Date()
+}).insertedId;
+db.books.updateOne(
+	{ _id: book._id },
+	{ $inc: { quantity: -bookInOrder.quantity } }
+);
 session.commitTransaction();
 
 // 2. Change the address of a customer.
+db.customers.updateOne({name: "Jim Jones", address: "Banegårdsgade 2, 8700 Horsens"}, {$set: {address:"Banegårdsgade 3, 8700 Horsens"}});
 
 // 3. Add an existing author to a book.
 
