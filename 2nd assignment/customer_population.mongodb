@@ -1,0 +1,10 @@
+db.customers.insertMany([
+	{
+		name: "Jim Jones",
+		address: "Banegårdsgade 2, 8700 Horsens"
+	},
+	{
+		name: "Jane Daniels",
+		address: "Chr M Østergaards Vej 4, 8700 Horsens"
+	}
+]);
