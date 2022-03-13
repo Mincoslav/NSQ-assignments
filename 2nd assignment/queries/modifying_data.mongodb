@@ -1,0 +1,25 @@
+use("2ND_ASSIGNMENT");
+
+// 1. Sell a book to a customer.
+let session = db.getMongo().startSession();
+session.startTransaction();
+
+let bookInOrder = { title: "Iron card", quantity:2 };
+let book = db.books.findOne({title: bookInOrder.title})
+let order = db.orders.insertOne({ 
+    customer_id: "622dd7a40466b05f33587626",
+    books: [{bookID: book._id.toString(), quantity:bookInOrder.quantity}],
+    total_price: (book.price * bookInOrder.quantity),
+    date: new Date()
+ }).insertedId;
+db.books.updateOne({ _id: book._id }, {$inc: {quantity: -bookInOrder.quantity}});
+session.commitTransaction();
+
+// 2. Change the address of a customer.
+
+// 3. Add an existing author to a book.
+
+// 4. Retire the "Space Opera" category and assign all books from that category to the parent category.
+// Don't assume you know the id of the parent category.
+
+// 5. Sell 3 copies of one book and 2 of another in a single order
