@@ -33,7 +33,7 @@ db.runCommand({
 	collMod: "orders",
 	validator: {
 		$jsonSchema: {
-			required: ["customer_id", "books", "total_price", "date", "time"],
+			required: ["customer_id", "books", "total_price", "date"],
 			properties: {
 				customer_id: {
 					bsonType: "string"
@@ -46,9 +46,6 @@ db.runCommand({
 				},
 				date: {
 					bsonType: "date"
-				},
-				time: {
-					bsonType: "timestamp"
 				}
 			}
 		}
