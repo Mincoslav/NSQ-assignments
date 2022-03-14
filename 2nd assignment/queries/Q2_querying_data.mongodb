@@ -24,6 +24,15 @@ db.orders.aggregate([
 // 4. Books that are categorized as neither fiction nor non-fiction
 
 // 5. Average page count by genre
+db.books.aggregate([
+	{
+		$group: {
+			_id: "$genres",
+			avg_pages: { $avg: "$price" },
+			no_of_books_in_genre: { $count: {}}
+		}
+	}
+]);
 
 // 6. Categories that have no sub-categories
 
