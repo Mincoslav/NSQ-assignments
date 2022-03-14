@@ -2,42 +2,31 @@
 use("2ND_ASSIGNMENT");
 
 // 1. All books by an author
-db.books.find({authors: "Sam"})
+db.books.find({ authors: "Sam" }, { isbn: 1 });
 
 // 2. Total price of an order
-
+db.orders.find({_id:ObjectId("622f33f5c5390f00117389f3")}, {total_price:1});
 
 // 3. Total sales (in £) to a customer
 
-
 // 4. Books that are categorized as neither fiction nor non-fiction
-
 
 // 5. Average page count by genre
 
-
 // 6. Categories that have no sub-categories
-
 
 // 7. ISBN numbers of books with more than one author
 
-
 // 8. ISBN numbers of books that sold at least X copies (you decide the value for X)
-
 
 // 9. Number of copies of each book sold – unsold books should show as 0 sold copies.
 
-
 // 10. Best-selling books: The top 10 selling books ordered in descending order by number of sales.
-
 
 // 11. Best-selling genres: The top 3 selling genres ordered in descending order by number of sales.
 
-
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
 
-
 // 13. Characters used in science fiction books. Not from (12) applies here as well.
-
 
 // 14. Number of books in each category including books in subcategories.
