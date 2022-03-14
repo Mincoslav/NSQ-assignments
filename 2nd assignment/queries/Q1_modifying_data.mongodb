@@ -33,6 +33,20 @@ db.books.updateOne(
 
 // 4. Retire the "Space Opera" category and assign all books from that category to the parent category.
 // Don't assume you know the id of the parent category.
+let category = db.categories.findOne({ name: "Space Opera" });
+
+let parent_category = db.categories.findOne({
+	name: category.parent_categories[0]
+});
+
+let books = db.books.updateMany(
+	{ categories: category._id.toString() },
+	{ $set: {"categories.$": parent_category._id.toString()}}
+);
+
+// This will delete Space Opera category
+// db.categories.deleteOne({"_id": category._id.toString()})
+
 
 // 5. Sell 3 copies of one book and 2 of another in a single order
 let session = db.getMongo().startSession();
