@@ -29,14 +29,16 @@ db.books.aggregate([
 		$group: {
 			_id: "$genres",
 			avg_pages: { $avg: "$price" },
-			no_of_books_in_genre: { $count: {}}
+			no_of_books_in_genre: { $count: {} }
 		}
 	}
 ]);
 
 // 6. Categories that have no sub-categories
+db.categories.find({sub_categories: {$size: 0}})
 
 // 7. ISBN numbers of books with more than one author
+db.books.find({ "authors.1": { $exists: true } })
 
 // 8. ISBN numbers of books that sold at least X copies (you decide the value for X)
 
