@@ -1,31 +1,68 @@
 use("2ND_ASSIGNMENT");
 
 // 1. Sell a book to a customer.
-let session = db.getMongo().startSession();
-session.startTransaction();
+// let session = db.getMongo().startSession();
+// session.startTransaction();
 
-let bookInOrder = { title: "Iron card", quantity: 1 };
-let book = db.books.findOne({ title: bookInOrder.title });
-let order = db.orders.insertOne({
-	customer_id: "622dd7a40466b05f33587626",
-	books: [{ bookID: book._id.toString(), quantity: bookInOrder.quantity }],
-	total_price: book.price * bookInOrder.quantity,
-	date: new Date()
-}).insertedId;
-db.books.updateOne(
-	{ _id: book._id },
-	{ $inc: { quantity: -bookInOrder.quantity } }
-);
-session.commitTransaction();
+// let bookInOrder = { title: "Iron card", quantity: 1 };
+// let book = db.books.findOne({ title: bookInOrder.title });
+// let order = db.orders.insertOne({
+// 	customer_id: "622dd7a40466b05f33587626",
+// 	books: [{ bookID: book._id.toString(), quantity: bookInOrder.quantity }],
+// 	total_price: book.price * bookInOrder.quantity,
+// 	date: new Date()
+// }).insertedId;
+// db.books.updateOne(
+// 	{ _id: book._id },
+// 	{ $inc: { quantity: -bookInOrder.quantity } }
+// );
+// session.commitTransaction();
 
 // 2. Change the address of a customer.
-db.customers.updateOne({name: "Jim Jones", address: "Banegårdsgade 2, 8700 Horsens"}, {$set: {address:"Banegårdsgade 3, 8700 Horsens"}});
+db.customers.updateOne(
+	{ name: "Jim Jones", address: "Banegårdsgade 2, 8700 Horsens" },
+	{ $set: { address: "Banegårdsgade 3, 8700 Horsens" } }
+);
 
 // 3. Add an existing author to a book.
-let existingAuthor = db.books.findOne({isbn:"908-3-16-128430-0"}).authors[0]
-db.books.updateOne({isbn:"765-3-16-122430-0"}, {$addToSet:{authors:existingAuthor}})
+let existingAuthor = db.books.findOne({ isbn: "908-3-16-128430-0" }).authors[0];
+db.books.updateOne(
+	{ isbn: "765-3-16-122430-0" },
+	{ $addToSet: { authors: existingAuthor } }
+);
 
 // 4. Retire the "Space Opera" category and assign all books from that category to the parent category.
 // Don't assume you know the id of the parent category.
 
 // 5. Sell 3 copies of one book and 2 of another in a single order
+let session = db.getMongo().startSession();
+session.startTransaction();
+
+let booksInOrder = [
+	{ title: "Iron card", quantity: 3 },
+	{ title: "New me", quantity: 2 }
+];
+
+let totalPrice = 0;
+
+let booksArray = booksInOrder.map(function (bookInOrder) {
+	let book = db.books.findOne({ title: bookInOrder.title });
+	print({ bookID: book._id.toString(), quantity: bookInOrder.quantity });
+	totalPrice += book.price * bookInOrder.quantity;
+
+	db.books.findAndModify({
+		query: { isbn: book.isbn },
+		update: { $inc: { quantity: -bookInOrder.quantity } }
+	});
+
+	return { isbn: book.isbn, quantity: bookInOrder.quantity };
+});
+
+let order = db.orders.insertOne({
+	customer_id: "622dd7a40466b05f33587626",
+	books: booksArray,
+	total_price: totalPrice,
+	date: new Date()
+}).insertedId;
+
+session.commitTransaction();
