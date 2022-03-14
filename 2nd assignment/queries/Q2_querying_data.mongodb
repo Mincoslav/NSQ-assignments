@@ -5,9 +5,21 @@ use("2ND_ASSIGNMENT");
 db.books.find({ authors: "Sam" }, { isbn: 1 });
 
 // 2. Total price of an order
-db.orders.find({_id:ObjectId("622f33f5c5390f00117389f3")}, {total_price:1});
+db.orders.find(
+	{ _id: ObjectId("622f33f5c5390f00117389f3") },
+	{ total_price: 1 }
+);
 
 // 3. Total sales (in £) to a customer
+db.orders.aggregate([
+	{
+		$group: {
+			_id: "$customer_id",
+			total_price: { $sum: totalPrice },
+			averageOrderQuantity: { $avg: { $size: "$books" } }
+		}
+	}
+]);
 
 // 4. Books that are categorized as neither fiction nor non-fiction
 
