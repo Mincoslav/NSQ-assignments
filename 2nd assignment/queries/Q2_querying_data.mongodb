@@ -35,12 +35,29 @@ db.books.aggregate([
 ]);
 
 // 6. Categories that have no sub-categories
-db.categories.find({sub_categories: {$size: 0}})
+db.categories.find({ sub_categories: { $size: 0 } });
 
 // 7. ISBN numbers of books with more than one author
-db.books.find({ "authors.1": { $exists: true } })
+db.books.find({ "authors.1": { $exists: true } });
 
 // 8. ISBN numbers of books that sold at least X copies (you decide the value for X)
+let x = 5
+db.orders.aggregate([
+	{
+		$unwind: "$books"
+	},
+	{
+		$group: {
+			_id: "$books.isbn",
+			copies_sold: { $sum: "$books.quantity" }
+		}
+	},
+	{
+		$match: {
+			copies_sold: { $gt: x }
+		}
+	}
+]);
 
 // 9. Number of copies of each book sold – unsold books should show as 0 sold copies.
 
@@ -50,6 +67,6 @@ db.books.find({ "authors.1": { $exists: true } })
 
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
 
-// 13. Characters used in science fiction books. Not from (12) applies here as well.
+// 13. Characters used in science fiction books. Note from (12) applies here as well.
 
 // 14. Number of books in each category including books in subcategories.
