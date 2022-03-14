@@ -1,8 +1,8 @@
 // Write find() or aggregate() statements to return the following data
-
+use("2ND_ASSIGNMENT");
 
 // 1. All books by an author
-
+db.books.find({authors: "Sam"})
 
 // 2. Total price of an order
 
