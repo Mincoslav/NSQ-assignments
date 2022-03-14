@@ -4,7 +4,7 @@ use("2ND_ASSIGNMENT");
 let session = db.getMongo().startSession();
 session.startTransaction();
 
-let bookInOrder = { title: "Iron card", quantity: 2 };
+let bookInOrder = { title: "Iron card", quantity: 1 };
 let book = db.books.findOne({ title: bookInOrder.title });
 let order = db.orders.insertOne({
 	customer_id: "622dd7a40466b05f33587626",
