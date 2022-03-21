@@ -181,7 +181,46 @@ db.orders
 	.pretty();
 
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
-
+db.categories.aggregate([
+	{
+		$match: {
+		  name: { $eq: "Fiction"}
+		}
+	},
+	{
+		$lookup:
+         {
+            from: "books",
+            localField: "_id",
+            foreignField: "categories",
+            as: "ParentBooks"
+        }
+	},
+	{
+		$graphLookup: {
+			from: "categories",
+			startWith: "$sub_categories",
+			connectFromField: "sub_categories",
+			connectToField: "name",
+			as: "ParentSubCategories"
+		},
+	},
+	{
+      $lookup:
+         {
+            from: "books",
+            localField: "ParentSubCategories._id",
+            foreignField: "categories",
+            as: "SubclassBooks"
+        }
+	},
+	{
+		$project:{
+			name: 1,
+			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
+		}
+	}
+]).pretty()
 // 13. Characters used in science fiction books. Note from (12) applies here as well.
 
 // 14. Number of books in each category including books in subcategories.
