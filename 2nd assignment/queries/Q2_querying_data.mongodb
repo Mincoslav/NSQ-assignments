@@ -11,7 +11,7 @@ db.orders.find(
 );
 
 // 3. Total sales (in £) to a customer
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 db.orders.aggregate([
 	{
 		$group: {
@@ -23,9 +23,16 @@ db.orders.aggregate([
 ]);
 
 // 4. Books that are categorized as neither fiction nor non-fiction
+use("2ND_ASSIGNMENT");
+db.categories.find({
+	$or: [
+		{ name: { $not: { $eq: "Fiction" } } },
+		{ name: { $not: { $eq: "Non-Fiction" } } }
+	]
+});
 
 // 5. Average page count by genre
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 db.books.aggregate([
 	{
 		$group: {
@@ -43,7 +50,7 @@ db.categories.find({ sub_categories: { $size: 0 } });
 db.books.find({ "authors.1": { $exists: true } });
 
 // 8. ISBN numbers of books that sold at least X copies (you decide the value for X)
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 let x = 5;
 db.orders.aggregate([
 	{
@@ -63,7 +70,7 @@ db.orders.aggregate([
 ]);
 
 // 9. Number of copies of each book sold – unsold books should show as 0 sold copies.
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 db.books
 	.aggregate([
 		{
@@ -112,7 +119,7 @@ db.books
 	.pretty();
 
 // 10. Best-selling books: The top 10 selling books ordered in descending order by number of sales.
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 db.orders
 	.aggregate([
 		{
@@ -141,7 +148,7 @@ db.orders
 	.pretty();
 
 // 11. Best-selling genres: The top 3 selling genres ordered in descending order by number of sales.
-use("2ND_ASSIGNMENT")
+use("2ND_ASSIGNMENT");
 db.orders
 	.aggregate([
 		{
@@ -187,47 +194,49 @@ db.orders
 	.pretty();
 
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
-use("2ND_ASSIGNMENT")
-db.categories.aggregate([
-	{
-		$match: {
-		  name: { $eq: "Fiction"}
-		}
-	},
-	{
-		$lookup:
-         {
-            from: "books",
-            localField: "_id",
-            foreignField: "categories",
-            as: "ParentBooks"
-        }
-	},
-	{
-		$graphLookup: {
-			from: "categories",
-			startWith: "$sub_categories",
-			connectFromField: "sub_categories",
-			connectToField: "name",
-			as: "ParentSubCategories"
+use("2ND_ASSIGNMENT");
+db.categories
+	.aggregate([
+		{
+			$match: {
+				name: { $eq: "Fiction" }
+			}
 		},
-	},
-	{
-      $lookup:
-         {
-            from: "books",
-            localField: "ParentSubCategories._id",
-            foreignField: "categories",
-            as: "SubclassBooks"
-        }
-	},
-	{
-		$project:{
-			name: 1,
-			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
+		{
+			$lookup: {
+				from: "books",
+				localField: "_id",
+				foreignField: "categories",
+				as: "ParentBooks"
+			}
+		},
+		{
+			$graphLookup: {
+				from: "categories",
+				startWith: "$sub_categories",
+				connectFromField: "sub_categories",
+				connectToField: "name",
+				as: "ParentSubCategories"
+			}
+		},
+		{
+			$lookup: {
+				from: "books",
+				localField: "ParentSubCategories._id",
+				foreignField: "categories",
+				as: "SubclassBooks"
+			}
+		},
+		{
+			$project: {
+				name: 1,
+				BooksFromCategory: {
+					$concatArrays: ["$ParentBooks", "$SubclassBooks"]
+				}
+			}
 		}
-	}
-]).pretty()
+	])
+	.pretty();
 // 13. Characters used in science fiction books. Note from (12) applies here as well.
 
 // 14. Number of books in each category including books in subcategories.
