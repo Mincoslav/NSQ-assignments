@@ -10,6 +10,7 @@ use("2ND_ASSIGNMENT");
 // Make sure you run it against the correct database and collection.
 db.categories.find();
 
+
 db.categories.insertMany([
 	{
 		name: "Biography",
@@ -20,8 +21,80 @@ db.categories.insertMany([
 			"Medical, Legal & Social Sciences",
 			"Sport"
 		],
+		parent_categories: []
+	},
+	{
+		name: "Historical",
+		sub_categories: ["Royalty", "Britain", "1701 - 1900"],
 		parent_categories: ["Biography"]
 	},
+	{
+		name: "Royalty",
+		sub_categories: [],
+		parent_categories: ["Historical"]
+	},
+	{
+		name: "Britain",
+		sub_categories: [],
+		parent_categories: ["Historical"]
+	},
+	{
+		name: "1701 - 1900",
+		sub_categories: [],
+		parent_categories: ["Historical"]
+	},
+	{
+		name: "Film, Television & Music",
+		sub_categories: ["Actors & Entertainers", "Music", "Theatre Performers"],
+		parent_categories: ["Biography"]
+	},
+	{
+		name: "Theatre Performers",
+		sub_categories: [],
+		parent_categories: ["Film, Television & Music"]
+	},
+		{
+		name: "Music",
+		sub_categories: [],
+		parent_categories: ["Film, Television & Music"]
+	},
+		{
+		name: "Actors & Entertainers",
+		sub_categories: [],
+		parent_categories: ["Film, Television & Music"]
+	},
+	{
+		name: "True Crime",
+		sub_categories: [],
+		parent_categories: ["Biography"]
+	},
+	{
+		name: "Medical, Legal & Social Sciences",
+		sub_categories: [],
+		parent_categories: ["Biography"]
+	},
+
+	{
+		name: "Sport",
+		sub_categories: ["Football", "Basketball, Hockey"],
+		parent_categories: ["Biography"]
+	},
+		{
+		name: "Football",
+		sub_categories: [],
+		parent_categories: ["Sport"]
+	},
+	{
+		name: "Basketball",
+		sub_categories: [],
+		parent_categories: ["Sport"]
+	},
+	{
+		name: "Hockey",
+		sub_categories: [],
+		parent_categories: ["Sport"]
+	},
+
 	{
 		name: "Food & Drink",
 		sub_categories: [
@@ -32,38 +105,64 @@ db.categories.insertMany([
 		parent_categories: ["Food & Drink"]
 	},
 	{
-		name: "Fiction",
-		sub_categories: ["Historical", "Fantasy", "Science Fiction"],
-		parent_categories: ["Fiction"]
+		name: "National & International",
+		sub_categories: [],
+		parent_categories: ["Food & Drink"]
 	},
 	{
-		name: "Historical",
-		sub_categories: ["Royalty", "Britain", "1701 - 1900"],
-		parent_categories: ["Historical"]
+		name: "Vegetarian & Vegan",
+		sub_categories: [],
+		parent_categories: ["Food & Drink"]
+	},
+	{
+		name: "Baking",
+		sub_categories: [],
+		parent_categories: ["Food & Drink"]
+	},
+	{
+		name: "Fiction",
+		sub_categories: ["Historical Fiction", "Fantasy", "Science Fiction"],
+		parent_categories: []
+	},
+	{
+		name: "Historical Fiction",
+		sub_categories: [],
+		parent_categories: ["Fiction"]
 	},
 	{
 		name: "Fantasy",
 		sub_categories: ["Epic", "Sword & Sorcery", "Myths & Legends"],
-		parent_categories: ["Fantasy"]
+		parent_categories: ["Fiction"]
 	},
 	{
 		name: "Science Fiction",
-		sub_categories: ["Alternative History", "Hard Science Fiction"],
+		sub_categories: ["Alternative History", "Space Opera"],
+		parent_categories: ["Fiction"]
+	},
+	{
+		name: "Epic",
+		sub_categories: [],
+		parent_categories: ["Fantasy"]
+	},
+	{
+		name: "Sword & Sorcery",
+		sub_categories: [],
+		parent_categories: ["Fantasy"]
+	},
+	{
+		name: "Myths & Legends",
+		sub_categories: [],
+		parent_categories: ["Fantasy"]
+	},
+	{
+		name: "Alternative History",
+		sub_categories: [],
 		parent_categories: ["Science Fiction"]
 	},
 	{
-		name: "Film, Television & Music",
-		sub_categories: ["Actors & Entertainers", "Music", "Theatre Performers"],
-		parent_categories: ["Film, Television & Music"]
-	},
-	{
-		name: "Sport",
-		sub_categories: ["Football", "Basketball"],
-		parent_categories: ["Sport"]
-	},
-	{
-		name: "Hockey",
+		name: "Space Opera",
 		sub_categories: [],
-		parent_categories: ["Sport"]
+		parent_categories: ["Science Fiction"]
 	},
+
 ]);
