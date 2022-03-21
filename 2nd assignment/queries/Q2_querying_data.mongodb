@@ -181,30 +181,17 @@ db.orders.aggregate([
 db.categories.aggregate([
 	{
 		$match: {
-		  name: { $eq: "Science Fiction"}
+		  name: { $eq: "Fiction"}
 		}
 	},
-		{
+	{
 		$lookup:
-			{
-				from: "books",
-				let: {
-					category_id: "$_id",
-				},
-				pipeline: [
-					{
-						$unwind: "$categories"
-					},
-					{
-						$match: {
-							$expr: {
-								$eq: ["$categories", "$$category_id"]
-							},
-						}
-					}
-				],
-				as: "BooksFromParent"
-			}
+         {
+            from: "books",
+            localField: "_id",
+            foreignField: "categories",
+            as: "ParentBooks"
+        }
 	},
 	{
 		$graphLookup: {
@@ -213,33 +200,22 @@ db.categories.aggregate([
 			connectFromField: "sub_categories",
 			connectToField: "name",
 			as: "ParentSubCategories"
+		},
+	},
+	{
+      $lookup:
+         {
+            from: "books",
+            localField: "ParentSubCategories._id",
+            foreignField: "categories",
+            as: "SubclassBooks"
+        }
+	},
+	{
+		$project:{
+			name: 1,
+			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
 		}
-	},
-	{
-		$unwind: "$ParentSubCategories"
-	},
-	{
-		$lookup:
-			{
-				from: "books",
-				let: {
-					category_id: "$ParentSubCategories._id",
-					main_sub_cat: "$_id"
-				},
-				pipeline: [
-					{
-						$unwind: "$categories"
-					},
-					{
-						$match: {
-							$expr: {
-								$eq: ["$categories", "$$category_id"]
-							},
-						}
-					}
-				],
-				as: "BooksAtached"
-			}
 	}
 ]).pretty()
 // 13. Characters used in science fiction books. Note from (12) applies here as well.
