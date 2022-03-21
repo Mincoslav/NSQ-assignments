@@ -8,7 +8,7 @@ db.books.insertMany([
 		authors: ["Sam", "Peter"],
 		genres: ["Romantic"],
 		characters: ["Angels", "Pirates"],
-		categories: ["6229d594c605f979adbfedc6"]
+		categories: ["Fantasy"]
 	},
 	{
 		title: "There",
@@ -19,7 +19,7 @@ db.books.insertMany([
 		authors: ["Simon", "John"],
 		genres: ["Humour"],
 		characters: ["Aliens"],
-		categories: ["6229d594c605f979adbfedc7"]
+		categories: ["Science Fiction"]
 	},
 	{
 		title: "Let it go",
@@ -30,7 +30,7 @@ db.books.insertMany([
 		authors: ["Sam"],
 		genres: ["Non-Romantic"],
 		characters: ["Clones"],
-		categories: ["6229d594c605f979adbfedc4"]
+		categories: ["Space Opera"]
 	},
 	{
 		title: "Iron card",
@@ -41,7 +41,7 @@ db.books.insertMany([
 		authors: ["Dawid"],
 		genres: ["Humour"],
 		characters: ["Pirates"],
-		categories: ["6229dd278da172f2ce6704ab"]
+		categories: ["Historical Fiction"]
 	},
 	{
 		title: "New me",
@@ -52,7 +52,7 @@ db.books.insertMany([
 		authors: ["Peter"],
 		genres: ["Humour"],
 		characters: ["Corporations"],
-		categories: ["6229dd278da172f2ce6704ab"]
+		categories: ["Alternative History"]
 	},
 	{
 		title: "Dark Sun",
@@ -63,7 +63,7 @@ db.books.insertMany([
 		authors: ["Dawid"],
 		genres: ["Mistery"],
 		characters: ["Angels"],
-		categories: ["6229d594c605f979adbfedc6"]
+		categories: ["Fantasy"]
 	},
 	{
 		title: "River",
@@ -74,7 +74,7 @@ db.books.insertMany([
 		authors: ["Simon", "Peter"],
 		genres: ["Horror"],
 		characters: ["Devils"],
-		categories: ["6229d594c605f979adbfedc6"]
+		categories: ["Fantasy"]
 	},
 	{
 		title: "It",
@@ -85,6 +85,17 @@ db.books.insertMany([
 		authors: ["Max", "John"],
 		genres: ["Thriller"],
 		characters: ["Clones"],
-		categories: ["6229d594c605f979adbfedc7"]
+		categories: ["Science Fiction"]
+	},
+	{
+		title: "Old story",
+		price: 103.22,
+		quantity: 23,
+		pages: 189,
+		isbn: "009-3-16-128259-0",
+		authors: ["Peter"],
+		genres: ["Humour"],
+		characters: ["Corporations"],
+		categories: ["Hockey"]
 	}
 ]);
