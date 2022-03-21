@@ -60,13 +60,126 @@ db.orders.aggregate([
 ]);
 
 // 9. Number of copies of each book sold – unsold books should show as 0 sold copies.
+db.books.aggregate( [
+	{
+		$lookup:
+			{
+				from: "orders",
+				let: {
+					order_isbn: "$isbn"
+				},
+				pipeline: [
+					{ 
+						$unwind: "$books"
+					},
+					{
+						$match: {
+							$expr: {
+								$eq: ["$books.isbn", "$$order_isbn"]
+							}
+						}
+					},
+					{					
+						$group: {
+							_id: "$books.isbn",
+							total_amount: { $sum: "$books.quantity"},
+						}
+					}
+				],
+				as: "CopiesSold"
+			}
+	},
+	{
+		$unwind: 
+		{
+			path: "$CopiesSold",
+			preserveNullAndEmptyArrays: true
+		} 
+	},
+	{
+		$project:
+		{
+			_id: 0,
+			title: 1,
+			CopiesSold: {$ifNull: ["$CopiesSold.total_amount", "$total_amount", 0]}
+		}
+	}
+] ).pretty()
+
 
 // 10. Best-selling books: The top 10 selling books ordered in descending order by number of sales.
+db.orders.aggregate([
+	{
+		$unwind: "$books"
+	},
+	{
+		$lookup: {
+		  from: "books",
+		  localField: 'books.isbn',
+		  foreignField: 'isbn',
+		  as: 'CopiesSold'
+		}
+	},
+	{
+		$group:{
+			_id: { title: "$CopiesSold.title"},
+			CopiesSold: { $sum: "$books.quantity"}
+		}
+	},
+	{
+		$sort:{
+			CopiesSold: -1
+		}
+	}
+]).pretty()
 
 // 11. Best-selling genres: The top 3 selling genres ordered in descending order by number of sales.
+db.orders.aggregate([
+	{
+		$unwind: "$books"
+	},
+	{
+		$lookup:
+			{
+				from: "books",
+				let: {
+					books_isbn: "$books.isbn"
+				},
+				pipeline: [
+					{
+						$match: {
+							$expr: {
+								$eq: ["$isbn", "$$books_isbn"]
+							}
+						}
+					},
+					{
+						$unwind: "$genres"
+					}
+				],
+				as: "CopiesSold"
+			}
+	},
+	{
+		$unwind: "$CopiesSold"
+	},
+	{
+		$group: {
+			_id: {genre: "$CopiesSold.genres"},
+			CopiesSold: {$sum: "$books.quantity"}
+		}
+	},
+	{
+		$limit: 3
+	},
+	{
+		$sort: {CopiesSold: -1} 
+	}
+]).pretty()
 
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
 
 // 13. Characters used in science fiction books. Note from (12) applies here as well.
 
 // 14. Number of books in each category including books in subcategories.
+
