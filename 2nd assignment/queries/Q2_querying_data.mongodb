@@ -70,17 +70,16 @@ db.orders.aggregate([
 ]);
 
 // 9. Number of copies of each book sold – unsold books should show as 0 sold copies.
-use("2ND_ASSIGNMENT");
-db.books
-	.aggregate([
-		{
-			$lookup: {
+db.books.aggregate( [
+	{
+		$lookup:
+			{
 				from: "orders",
 				let: {
 					order_isbn: "$isbn"
 				},
 				pipeline: [
-					{
+					{ 
 						$unwind: "$books"
 					},
 					{
@@ -90,153 +89,235 @@ db.books
 							}
 						}
 					},
-					{
+					{					
 						$group: {
 							_id: "$books.isbn",
-							total_amount: { $sum: "$books.quantity" }
+							total_amount: { $sum: "$books.quantity"},
 						}
 					}
 				],
 				as: "CopiesSold"
 			}
-		},
+	},
+	{
+		$unwind: 
 		{
-			$unwind: {
-				path: "$CopiesSold",
-				preserveNullAndEmptyArrays: true
-			}
-		},
+			path: "$CopiesSold",
+			preserveNullAndEmptyArrays: true
+		} 
+	},
+	{
+		$project:
 		{
-			$project: {
-				_id: 0,
-				title: 1,
-				CopiesSold: {
-					$ifNull: ["$CopiesSold.total_amount", "$total_amount", 0]
-				}
-			}
+			_id: 0,
+			title: 1,
+			CopiesSold: {$ifNull: ["$CopiesSold.total_amount", "$total_amount", 0]}
 		}
-	])
-	.pretty();
+	},
+	{
+		$sort: {CopiesSold: -1}
+	}
+] ).pretty()
 
 // 10. Best-selling books: The top 10 selling books ordered in descending order by number of sales.
-use("2ND_ASSIGNMENT");
-db.orders
-	.aggregate([
-		{
-			$unwind: "$books"
-		},
-		{
-			$lookup: {
-				from: "books",
-				localField: "books.isbn",
-				foreignField: "isbn",
-				as: "CopiesSold"
-			}
-		},
-		{
-			$group: {
-				_id: { title: "$CopiesSold.title" },
-				CopiesSold: { $sum: "$books.quantity" }
-			}
-		},
-		{
-			$sort: {
-				CopiesSold: -1
-			}
+db.orders.aggregate([
+	{
+		$unwind: "$books"
+	},
+	{
+		$lookup: {
+		  from: "books",
+		  localField: 'books.isbn',
+		  foreignField: 'isbn',
+		  as: 'CopiesSold'
 		}
-	])
-	.pretty();
+	},
+	{
+		$group:{
+			_id: { title: "$CopiesSold.title"},
+			CopiesSold: { $sum: "$books.quantity"}
+		}
+	},
+	{
+		$sort:{
+			CopiesSold: -1
+		}
+	},
+	{
+		$limit: 10
+	}
+]).pretty()
 
 // 11. Best-selling genres: The top 3 selling genres ordered in descending order by number of sales.
-use("2ND_ASSIGNMENT");
-db.orders
-	.aggregate([
-		{
-			$unwind: "$books"
-		},
-		{
-			$lookup: {
-				from: "books",
-				let: {
-					books_isbn: "$books.isbn"
-				},
-				pipeline: [
-					{
-						$match: {
-							$expr: {
-								$eq: ["$isbn", "$$books_isbn"]
-							}
-						}
-					},
-					{
-						$unwind: "$genres"
-					}
-				],
-				as: "CopiesSold"
-			}
-		},
-		{
-			$unwind: "$CopiesSold"
-		},
-		{
-			$group: {
-				_id: { genre: "$CopiesSold.genres" },
-				CopiesSold: { $sum: "$books.quantity" }
-			}
-		},
-		{
-			$limit: 3
-		},
-		{
-			$sort: { CopiesSold: -1 }
+db.orders.aggregate([
+	{
+		$unwind: "$books"
+	},
+	{
+		$lookup:
+         {
+            from: "books",
+            localField: "books.isbn",
+            foreignField: "isbn",
+            as: "CopiesSold"
+        }
+	},
+	{
+		$unwind: "$CopiesSold"
+	},
+	{
+		$unwind: "$CopiesSold.genres"
+	},
+	{
+		$group: {
+			_id: {genre: "$CopiesSold.genres"},
+			CopiesSold: { $sum: "$books.quantity"}
 		}
-	])
-	.pretty();
+	},
+	{
+		$sort: {CopiesSold: -1} 
+	},
+	{
+		$limit: 3
+	}
+]).pretty()
 
 // 12. All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure. (Hint: $graphLookup)
-use("2ND_ASSIGNMENT");
-db.categories
-	.aggregate([
-		{
-			$match: {
-				name: { $eq: "Fiction" }
-			}
-		},
-		{
-			$lookup: {
-				from: "books",
-				localField: "_id",
-				foreignField: "categories",
-				as: "ParentBooks"
-			}
-		},
-		{
-			$graphLookup: {
-				from: "categories",
-				startWith: "$sub_categories",
-				connectFromField: "sub_categories",
-				connectToField: "name",
-				as: "ParentSubCategories"
-			}
-		},
-		{
-			$lookup: {
-				from: "books",
-				localField: "ParentSubCategories._id",
-				foreignField: "categories",
-				as: "SubclassBooks"
-			}
-		},
-		{
-			$project: {
-				name: 1,
-				BooksFromCategory: {
-					$concatArrays: ["$ParentBooks", "$SubclassBooks"]
-				}
-			}
+db.categories.aggregate([
+	{
+		$match: {
+		  name: { $eq: "Science Fiction"}
 		}
-	])
-	.pretty();
+	},
+	{
+		$lookup:
+         {
+            from: "books",
+            localField: "_id",
+            foreignField: "categories",
+            as: "ParentBooks"
+        }
+	},
+	{
+		$graphLookup: {
+			from: "categories",
+			startWith: "$sub_categories",
+			connectFromField: "sub_categories",
+			connectToField: "name",
+			as: "ParentSubCategories"
+		},
+	},
+	{
+      $lookup:
+         {
+            from: "books",
+            localField: "ParentSubCategories._id",
+            foreignField: "categories",
+            as: "SubclassBooks"
+        }
+	},
+	{
+		$project:{
+			name: 1,
+			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
+		}
+	}
+]).pretty()
+
 // 13. Characters used in science fiction books. Note from (12) applies here as well.
+db.categories.aggregate([
+	{
+		$match: {
+		  name: { $eq: "Science Fiction"}
+		}
+	},
+	{
+		$lookup:
+         {
+            from: "books",
+            localField: "_id",
+            foreignField: "categories",
+            as: "ParentBooks"
+        }
+	},
+	{
+		$graphLookup: {
+			from: "categories",
+			startWith: "$sub_categories",
+			connectFromField: "sub_categories",
+			connectToField: "name",
+			as: "ParentSubCategories"
+		},
+	},
+	{
+      $lookup:
+         {
+            from: "books",
+            localField: "ParentSubCategories._id",
+            foreignField: "categories",
+            as: "SubclassBooks"
+        }
+	},
+	{
+		$project:{
+			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
+		}
+	},
+	{
+		$unwind: "$BooksFromCategory"
+	},
+	{
+		$unwind: "$BooksFromCategory.characters"
+	},
+	{
+		$group: {
+			_id: {characters: "$BooksFromCategory.characters"}
+		}
+	}
+]).pretty()
 
 // 14. Number of books in each category including books in subcategories.
+db.categories.aggregate([
+	{
+		$match: {
+		  parent_categories: { $size: 0}
+		}
+	},
+	{
+		$lookup:
+         {
+            from: "books",
+            localField: "_id",
+            foreignField: "categories",
+            as: "ParentBooks"
+        }
+	},
+	{
+		$graphLookup: {
+			from: "categories",
+			startWith: "$sub_categories",
+			connectFromField: "sub_categories",
+			connectToField: "name",
+			as: "ParentSubCategories"
+		},
+	},
+	{
+      $lookup:
+         {
+            from: "books",
+            localField: "ParentSubCategories._id",
+            foreignField: "categories",
+            as: "SubclassBooks"
+        }
+	},
+	{
+		$project:{
+			_id: 0,
+			name: 1,
+			BooksInCategory: {$size: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}}
+		}
+	},
+	{
+		$sort: {BooksInCategory: -1}
+	}
+]).pretty()
