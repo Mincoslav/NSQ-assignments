@@ -2,7 +2,7 @@
 use("2ND_ASSIGNMENT");
 
 // 1. All books by an author
-db.books.find({ authors: "Sam" }, { isbn: 1 });
+db.books.find({ authors: "Sam" }, { isbn: 1, title: 1 });
 
 // 2. Total price of an order
 db.orders.find(
@@ -16,20 +16,43 @@ db.orders.aggregate([
 	{
 		$group: {
 			_id: "$customer_id",
-			total_price: { $sum: totalPrice },
-			averageOrderQuantity: { $avg: { $size: "$books" } }
+			total_price: { $sum: "$total_price" },
 		}
 	}
 ]);
 
 // 4. Books that are categorized as neither fiction nor non-fiction
 use("2ND_ASSIGNMENT");
-db.categories.find({
-	$or: [
-		{ name: { $not: { $eq: "Fiction" } } },
-		{ name: { $not: { $eq: "Non-Fiction" } } }
-	]
-});
+db.books.aggregate( [
+	{
+		$unwind: "$categories"
+	},
+	{
+		$lookup:
+			{
+				from: "categories",
+				let: {
+					books_id: "$categories"
+				},
+				pipeline: [
+					{
+						$match: {
+							$expr: {
+								$eq: ["$_id", "$$books_id"]
+							},
+						$or: [
+							{ parent_categories: { $eq: "Fiction"  } },
+							{ sub_categories: { $eq: "Fiction"  } }
+						]
+						}
+					}
+				],
+				as: "BooksInFiction"
+			}
+	}
+] ).pretty()
+
+
 
 // 5. Average page count by genre
 use("2ND_ASSIGNMENT");
@@ -133,8 +156,11 @@ db.orders.aggregate([
 		}
 	},
 	{
+		$unwind: "$CopiesSold"
+	},
+	{
 		$group:{
-			_id: { title: "$CopiesSold.title"},
+			_id: "$CopiesSold.title",
 			CopiesSold: { $sum: "$books.quantity"}
 		}
 	},
@@ -170,7 +196,7 @@ db.orders.aggregate([
 	},
 	{
 		$group: {
-			_id: {genre: "$CopiesSold.genres"},
+			_id: "$CopiesSold.genres",
 			CopiesSold: { $sum: "$books.quantity"}
 		}
 	},
@@ -219,7 +245,7 @@ db.categories.aggregate([
 	{
 		$project:{
 			name: 1,
-			BooksFromCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
+			BooksInCategory: {$concatArrays: ["$ParentBooks", "$SubclassBooks"]}
 		}
 	}
 ]).pretty()
