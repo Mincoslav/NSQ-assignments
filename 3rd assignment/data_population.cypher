@@ -1,3 +1,4 @@
+// Books creation
 CREATE (v1: Author{id:1, name:"Frank Herbert"}),
 (v2: Genre{id:1, name:"Non-Romantic"}),
 (v3: Character{id:1, name:"Aliens"}),
@@ -13,3 +14,5 @@ CREATE (v1: Author{id:1, name:"Frank Herbert"}),
 (v5)-[:Has]->(v4)
 
 
+// Customer creation
+CREATE (jim: Customer{id:1, address:"Banegårdsgade 2, 8700 Horsens", name:"Jim Jones"})
