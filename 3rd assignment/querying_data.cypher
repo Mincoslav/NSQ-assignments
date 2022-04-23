@@ -3,6 +3,8 @@ MATCH (author:Author)-[:Writes]-(books)
 WHERE author.name = 'Frank Herbert' RETURN author, books
 
 // Query #2 Total price of an order
+MATCH (order: Order)
+RETURN order.total
 
 // Query #3 Total sales (in £) to a customer
 
