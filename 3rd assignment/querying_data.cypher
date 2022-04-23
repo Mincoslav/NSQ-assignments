@@ -1,4 +1,6 @@
 // Query #1 All books by an author
+MATCH (author:Author)-[:Writes]-(books)
+WHERE author.name = 'Frank Herbert' RETURN author, books
 
 // Query #2 Total price of an order
 
