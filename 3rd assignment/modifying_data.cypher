@@ -1,6 +1,10 @@
 // Query #1 - Sell a book to a customer
-
-
+MATCH (customer {name: 'Jim Jones'}),
+(book {name:"Dune"})
+SET book.quantity = book.quantity-1
+CREATE (order:Order {datetime:datetime(), total: book.price}),
+(order)-[contains:CONTAINS {quantity: 1}]->(book),
+(customer)-[makes:MAKES]->(order)
 
 // Query #2 - Change the address of a customer.
 MATCH (customer {name: 'Jim Jones'})
