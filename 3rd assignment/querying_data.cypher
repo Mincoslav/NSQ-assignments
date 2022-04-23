@@ -7,6 +7,9 @@ MATCH (order: Order)
 RETURN order.total
 
 // Query #3 Total sales (in £) to a customer
+MATCH (customer:Customer {name:"Jim Jones"})-[:MAKES]-(orders:Order)
+RETURN sum(orders.total)
+
 
 // Query #4 Books that are categorized as neither fiction nor non-fiction
 
