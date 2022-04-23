@@ -29,3 +29,12 @@ RETURN relationship
 
 
 // Query #5 - Sell 3 copies of one book and 2 of another in a single order
+MATCH (customer {name: 'Jim Jones'}),
+(book {name:"Dune"}),
+(book2 {name:"Dune Messiah"})
+SET book.quantity = book.quantity-3,
+book2.quantity = book2.quantity-2
+CREATE (order:Order {datetime:datetime(), total: ((book.price*3)+(book2.price*2))}),
+(order)-[:CONTAINS {quantity: 3}]->(book),
+(order)-[:CONTAINS {quantity: 2}]->(book2),
+(customer)-[makes:MAKES]->(order)
