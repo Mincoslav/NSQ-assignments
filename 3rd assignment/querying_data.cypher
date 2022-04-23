@@ -14,6 +14,8 @@ RETURN sum(orders.total)
 // Query #4 Books that are categorized as neither fiction nor non-fiction
 
 // Query #5 Average page count by genre
+MATCH (genre:Genre)-[:BELONGS]-(books)
+RETURN genre.name, avg(books.pageCount)
 
 // Query #6 Categories that have no sub-categories
 
