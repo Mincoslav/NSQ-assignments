@@ -26,9 +26,5 @@ CREATE (category1:Category {name:"Galactic Empire"}),
 (category2)-[:HAS]->(category1),
 (character)-[:APPEARS]->(book)
 
-
-// Standalone author
-CREATE (author2: Author{name:"Frank Herbert Jr."}),
-
 // Customer creation
 CREATE (jim: Customer{address:"Banegårdsgade 2, 8700 Horsens", name:"Jim Jones"})

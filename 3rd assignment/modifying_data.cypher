@@ -13,6 +13,8 @@ RETURN customer
 
 
 // Query #3 - Add an existing author to a book.
+// Standalone author
+CREATE (author2: Author{name:"Frank Herbert Jr."}),
 MATCH 
 	(book:Book),
 	(author:Author)
