@@ -12,6 +12,9 @@ RETURN sum(orders.total)
 
 
 // Query #4 Books that are categorized as neither fiction nor non-fiction
+MATCH (book:Book)<-[:INCLUDES]-(category:Category)
+WHERE category.name <> 'Science Fiction'
+return book
 
 // Query #5 Average page count by genre
 MATCH (genre:Genre)-[:BELONGS]-()
