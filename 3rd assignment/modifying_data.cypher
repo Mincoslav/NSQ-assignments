@@ -19,14 +19,15 @@ MATCH
 	(book:Book),
 	(author:Author)
 WHERE book.title = "Dune" AND author.name = "Frank Herbert Jr."
-CREATE (author)-[relationship:Writes]->(book)
+CREATE (author)-[relationship:WRITES]->(book)
 RETURN relationship
 
 
 // Query #4 - Retire the "Space Opera" category and assign all books from that category to the parent category. 
 // Don't assume you know the id of the parent category.
-
-
+MATCH (parent:Category)-[parentRel:HAS]->(category:Category{name:"Space Opera"})-[relationship:INCLUDES]->(book)
+CREATE (parent)-[:INCLUDES]->book
+DETACH DELETE relationship
 
 // Query #5 - Sell 3 copies of one book and 2 of another in a single order
 MATCH (customer {name: 'Jim Jones'}),
