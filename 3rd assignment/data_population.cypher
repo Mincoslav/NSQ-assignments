@@ -13,6 +13,7 @@ CREATE (author: Author{name:"Frank Herbert"}),
 (category3)-[:HAS]->(category2),
 (category2)-[:HAS]->(category1)
 
+<<<<<<< HEAD
 // Category creation
 CREATE (category4: Category{name:"Biography"}),
     (category5: Category{name:"Historical"}),
@@ -166,6 +167,13 @@ CREATE (category1:Category {name:"Galactic Empire"}),
 (category1)-[:INCLUDES]->(book),
 (category2)-[:HAS]->(category1),
 (character)-[:APPEARS]->(book)
+
+// MATCH (book: Book{name:"Dune Messiah"})
+// MATCH (category2:Category {name: "Science Fiction"})
+// CREATE (category1:Category {name:"Galactic Empire"}),
+// (category2)-[:HAS]->(category1),
+// (category1)-[:INCLUDES]->(book),
+
 
 // Customer creation
 CREATE (jim: Customer{address:"Banegårdsgade 2, 8700 Horsens", name:"Jim Jones"})
