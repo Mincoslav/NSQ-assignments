@@ -13,7 +13,6 @@ CREATE (author: Author{name:"Frank Herbert"}),
 (category3)-[:HAS]->(category2),
 (category2)-[:HAS]->(category1)
 
-<<<<<<< HEAD
 // Category creation
 CREATE (category4: Category{name:"Biography"}),
     (category5: Category{name:"Historical"}),
