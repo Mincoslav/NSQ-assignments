@@ -44,7 +44,7 @@ RETURN b.isbn
 // Query #12 All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure.
 
 // Query #13 Characters used in science fiction books. Note from (12) applies here as well.
-MATCH (character:Character)-[:APPEARS]-(book:Book)-[:INCLUDES]-(category:Category)-[:HAS *]-(parent:Category{name:"Science Fiction"})
+MATCH (character:Character)-[:APPEARS]->(book:Book)<-[:INCLUDES]-(category:Category)<-[:HAS *]-(parent:Category{name:"Science Fiction"})
 RETURN DISTINCT character.name
 
 // Query #14 Number of books in each category including books in subcategories.
