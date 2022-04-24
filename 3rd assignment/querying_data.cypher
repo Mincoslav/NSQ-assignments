@@ -1,5 +1,5 @@
 // Query #1 All books by an author
-MATCH (author:Author)-[:Writes]-(books)
+MATCH (author:Author)-[:WRITES]-(books)
 WHERE author.name = 'Frank Herbert' RETURN author, books
 
 // Query #2 Total price of an order
@@ -14,14 +14,23 @@ RETURN sum(orders.total)
 // Query #4 Books that are categorized as neither fiction nor non-fiction
 
 // Query #5 Average page count by genre
-MATCH (genre:Genre)-[:BELONGS]-(books)
-RETURN genre.name, avg(books.pageCount)
+MATCH (genre:Genre)-[:BELONGS]-()
+RETURN genre.name
 
 // Query #6 Categories that have no sub-categories
+MATCH (category:Category) WHERE NOT (category) - [:HAS] -> (:Category)
+RETURN category
 
 // Query #7 ISBN numbers of books with more than one author
+MATCH (book:Book) <- [:WRITES]- (author:Author) 
+with book, count(author) as total WHERE total > 1 
+RETURN book.isbn
 
 // Query #8 ISBN numbers of books that sold at least X copies (you decide the value for X)
+MATCH (o:Order)-[c:CONTAINS]->(b:Book)
+WITH b, sum(c.quantity) as soldCount
+WHERE soldCount > 2
+RETURN b.isbn
 
 // Query #9 Number of copies of each book sold – unsold books should show as 0 sold copies
 

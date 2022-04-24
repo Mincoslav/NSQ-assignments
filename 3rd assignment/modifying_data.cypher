@@ -19,7 +19,7 @@ MATCH
 	(book:Book),
 	(author:Author)
 WHERE book.title = "Dune" AND author.name = "Frank Herbert Jr."
-CREATE (author)-[relationship:Writes]->(book)
+CREATE (author)-[relationship:WRITES]->(book)
 RETURN relationship
 
 
