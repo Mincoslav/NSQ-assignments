@@ -39,11 +39,16 @@ RETURN b.isbn
 MATCH (b:Book)
 OPTIONAL MATCH (o:Order)-[c:CONTAINS]->(b:Book)
 RETURN sum(c.quantity), b.name
+
 // Query #10 Best-selling books: The top 10 selling books ordered in descending order by number of sales
 MATCH (b:Book)
 OPTIONAL MATCH (o:Order)-[c:CONTAINS]->(b:Book)
 RETURN sum(c.quantity) as sold, b.name ORDER BY sold DESC LIMIT 10
+
 // Query #11 Best-selling genres: The top 3 selling genres ordered in descending order by number of sales
+MATCH (b:Book)
+MATCH (o:Order)-[c:CONTAINS]->(b:Book)-[:BELONGS]->(genre:Genre)
+RETURN sum(c.quantity) as sold, genre.name ORDER BY sold DESC LIMIT 3
 
 // Query #12 All science fiction books. Note: Books in science fiction subcategories like cyberpunk also count as science fiction. Don’t use your knowledge of the concrete category structure.
 MATCH (book:Book)<-[:INCLUDES]-(category:Category)<-[:HAS *]-(parent:Category{name:"Science Fiction"})
