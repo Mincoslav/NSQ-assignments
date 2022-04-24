@@ -59,3 +59,5 @@ MATCH (character:Character)-[:APPEARS]->(book:Book)<-[:INCLUDES]-(category:Categ
 RETURN DISTINCT character.name
 
 // Query #14 Number of books in each category including books in subcategories.
+MATCH (book:Book)<-[:INCLUDES]-(category:Category)<-[:HAS *]-(parent:Category)
+RETURN parent.name, count(book)
