@@ -69,8 +69,7 @@ CREATE (category4: Category{name:"Biography"}),
     (category29)-[:HAS]->(category31)
 
 // Books
-CREATE (book: Book{name:"Hello", price:37.99, quantity:1300, pageCount: 100, isbn:"888-3-16-128430-0"}), (category1:Category {name:"Galactic Empire"}) // Space opera
-(author1: Author{name:"Sam"}),
+CREATE (book: Book{name:"Hello", price:37.99, quantity:1300, pageCount: 100, isbn:"888-3-16-128430-0"}), (category1:Category {name:"Galactic Empire"}),
 (author2: Author{name:"Pater"}),
 (author1)-[:WRITES]->(book),
 (author2)-[:WRITES]->(book),
@@ -83,23 +82,27 @@ CREATE (book: Book{name:"Hello", price:37.99, quantity:1300, pageCount: 100, isb
 (category1)-[:INCLUDES]->(book)
 
 MATCH (findCharacter: Character{name:"Aliens"} ), (category1:Category {name:"Galactic Empire"})
-CREATE (book1: Book{name:"There", price:56.99, quantity:2145, pageCount: 350, isbn:"978-3-16-148410-0"}), // Galactix
+CREATE (book1: Book{name:"There", price:56.99, quantity:2145, pageCount: 350, isbn:"978-3-16-148410-0"}),
 (author2: Author{name:"Simon"}),
 (author3: Author{name:"John"}),
 (author2)-[:WRITES]->(book1),
 (author3)-[:WRITES]->(book1),
 (genre1: Genre{name:"Humour"}),
 (book1)-[:BELONGS]->(genre1),
-(findCharacter)-[:APPEARS]->(book1)
+(findCharacter)-[:APPEARS]->(book1),
 (category1)-[:INCLUDES]->(book1)
+
+CREATE (author: Author{name:"Sam"} )
 
 MATCH (author: Author{name:"Sam"} ), (genre: Genre{name:"Non-Romantic"} ), (category1:Category {name:"Royalty"})
 CREATE (book2: Book{name:"Let it go", price:75.99, quantity:3009, pageCount: 178, isbn:"908-3-16-128430-0"}),
 (author)-[:WRITES]->(book2),
 (book2)-[:BELONGS]->(genre),
 (character1: Character{name:"Clones"}),
-(character1)-[:APPEARS]->(book2)
+(character1)-[:APPEARS]->(book2),
 (category1)-[:INCLUDES]->(book2)
+
+
 
 MATCH (genre: Genre{name:"Humour"} ), (findCharacter: Character{name:"Pirates"} ), (category1:Category {name:"Baking"})
 CREATE (book3: Book{name:"Iron card", price:100.99, quantity:857, pageCount: 369, isbn:"765-3-16-122430-0"}),
@@ -154,12 +157,8 @@ CREATE (book8: Book{name:"Old story", price:103.22, quantity:23, pageCount: 189,
 (character1)-[:APPEARS]->(book8),
 (category1)-[:INCLUDES]->(book8)
 
-MATCH (author:Author {name: "Frank Herbert"})
-MATCH (category2:Category {name: "Science Fiction"})
-MATCH (category3:Category {name: "Science Fiction & Fantasy"})
-MATCH (character:Character {name: "Aliens"})
-CREATE (category1:Category {name:"Galactic Empire"}),
-(genre: Genre{name:"Novel"}),
+MATCH (author:Author {name: "Frank Herbert"}), (category2:Category {name: "Science Fiction"}), (category3:Category {name: "Science Fiction & Fantasy"}), (character:Character {name: "Aliens"}), (category1:Category {name:"Galactic Empire"})
+CREATE(genre: Genre{name:"Novel"}),
 (book: Book{name:"Dune Messiah", price:7, quantity:1000, pageCount: 350, isbn:"978-1473655324"}),
 (book)-[:BELONGS]->(genre),
 (author)-[:WRITES]->(book),
