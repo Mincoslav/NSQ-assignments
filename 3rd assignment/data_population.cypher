@@ -69,7 +69,7 @@ CREATE (category4: Category{name:"Biography"}),
     (category29)-[:HAS]->(category31)
 
 // Books
-CREATE (book: Book{name:"Hello", price:37.99, quantity:1300, pageCount: 100, isbn:"888-3-16-128430-0"}), (category1:Category {name:"Galactic Empire"}) // Space opera
+CREATE (book: Book{name:"Hello", price:37.99, quantity:1300, pageCount: 100, isbn:"888-3-16-128430-0"}), (category1:Category {name:"Galactic Empire"}), // Space opera
 (author1: Author{name:"Sam"}),
 (author2: Author{name:"Pater"}),
 (author1)-[:WRITES]->(book),
@@ -90,7 +90,7 @@ CREATE (book1: Book{name:"There", price:56.99, quantity:2145, pageCount: 350, is
 (author3)-[:WRITES]->(book1),
 (genre1: Genre{name:"Humour"}),
 (book1)-[:BELONGS]->(genre1),
-(findCharacter)-[:APPEARS]->(book1)
+(findCharacter)-[:APPEARS]->(book1),
 (category1)-[:INCLUDES]->(book1)
 
 MATCH (author: Author{name:"Sam"} ), (genre: Genre{name:"Non-Romantic"} ), (category1:Category {name:"Royalty"})
@@ -98,7 +98,7 @@ CREATE (book2: Book{name:"Let it go", price:75.99, quantity:3009, pageCount: 178
 (author)-[:WRITES]->(book2),
 (book2)-[:BELONGS]->(genre),
 (character1: Character{name:"Clones"}),
-(character1)-[:APPEARS]->(book2)
+(character1)-[:APPEARS]->(book2),
 (category1)-[:INCLUDES]->(book2)
 
 MATCH (genre: Genre{name:"Humour"} ), (findCharacter: Character{name:"Pirates"} ), (category1:Category {name:"Baking"})
@@ -176,9 +176,9 @@ CREATE (category1:Category {name:"Galactic Empire"}),
 
 // Customer creation
 CREATE (jim: Customer{address:"Banegårdsgade 2, 8700 Horsens", name:"Jim Jones"})
-CREATE (jim: Customer{address:"Klintevej 54, 1972 Frederiksberg C", name:"Nick Gurr"})
-CREATE (jim1: Customer{address:"Klintevej 42, 3600 Frederikssund", name:"Ben Dover"})
-CREATE (jim2: Customer{address:"Søndre Havnekaj 40, 4050 Skibby", name:"Jenna Talls"})
+CREATE (jim1: Customer{address:"Klintevej 54, 1972 Frederiksberg C", name:"Nick Gurr"})
+CREATE (jim2: Customer{address:"Klintevej 42, 3600 Frederikssund", name:"Ben Dover"})
+CREATE (jim3: Customer{address:"Søndre Havnekaj 40, 4050 Skibby", name:"Jenna Talls"})
 
 
 MATCH (customer {name: 'Nick Gurr'}),
