@@ -176,3 +176,39 @@ CREATE (category1:Category {name:"Galactic Empire"}),
 
 // Customer creation
 CREATE (jim: Customer{address:"Banegårdsgade 2, 8700 Horsens", name:"Jim Jones"})
+CREATE (jim: Customer{address:"Klintevej 54, 1972 Frederiksberg C", name:"Nick Gurr"})
+CREATE (jim1: Customer{address:"Klintevej 42, 3600 Frederikssund", name:"Ben Dover"})
+CREATE (jim2: Customer{address:"Søndre Havnekaj 40, 4050 Skibby", name:"Jenna Talls"})
+
+
+MATCH (customer {name: 'Nick Gurr'}),
+(book {name:"Let it go"}),
+(book2 {name:"There"})
+SET book.quantity = book.quantity-6,
+book2.quantity = book2.quantity-9
+CREATE (order:Order {datetime:datetime(), total: ((book.price*6)+(book2.price*9))}),
+(order)-[:CONTAINS {quantity: 6}]->(book),
+(order)-[:CONTAINS {quantity: 9}]->(book2),
+(customer)-[makes:MAKES]->(order)
+
+MATCH (customer {name: 'Ben Dover'}),
+(book {name:"Dune"}),
+(book2 {name:"Hello"}),
+(book3 {name:"New me"})
+SET book.quantity = book.quantity-10,
+book2.quantity = book2.quantity-8,
+book3.quantity = book3.quantity-16
+CREATE (order:Order {datetime:datetime(), total: ((book.price*10)+(book2.price*8)+(book3.price*16))}),
+(order)-[:CONTAINS {quantity: 10}]->(book),
+(order)-[:CONTAINS {quantity: 8}]->(book2),
+(order)-[:CONTAINS {quantity: 16}]->(book3),
+(customer)-[makes:MAKES]->(order)
+
+
+MATCH (customer {name: 'Jenna Talls'}),
+(book {name:"Dune Messiah"})
+SET book.quantity = book.quantity-2
+CREATE (order:Order {datetime:datetime(), total: ((book.price*2))}),
+(order)-[:CONTAINS {quantity: 2}]->(book),
+(customer)-[makes:MAKES]->(order)
+
