@@ -45,7 +45,7 @@ let books = db.books.updateMany(
 );
 
 // This will delete Space Opera category
-// db.categories.deleteOne({"_id": category._id.toString()})
+// db.categories.deleteOne({"_id": category._id})
 
 
 // 5. Sell 3 copies of one book and 2 of another in a single order
