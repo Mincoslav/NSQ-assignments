@@ -115,7 +115,7 @@ db.runCommand({
 				sub_categories: {
 					bsonType: "array",
 					items: {
-						type: "string"
+						bsonType: "string"
 					}
 				},
 				parent_categories: {
