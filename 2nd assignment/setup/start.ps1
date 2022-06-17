@@ -1,10 +1,11 @@
-
+# Starting server instances
 mongod --port 27017 --config config/configServ1.cfg --dbpath config/data1 
 mongod --port 27117 --config config/configServ2.cfg --dbpath config/data2
 mongod --port 27217 --config config/configServ3.cfg --dbpath config/data3
 
 mongosh --host localhost --port 27017
 # in mongo shell 
+# Initiate replica set with members
 rs.initiate(
     {
       _id: "set1",
@@ -17,8 +18,8 @@ rs.initiate(
     }
   )
 
-
-mongod --port 27016 --config SH1/config1.cfg --dbpath SH1/data1 
+# Creating replicas for the set that goes into the shard.
+mongod --port 27016--config SH1/config1.cfg --dbpath SH1/data1 
 mongod --port 27116 --config SH1/config2.cfg --dbpath SH1/data2
 mongod --port 27216 --config SH1/config3.cfg --dbpath SH1/data3
 

@@ -113,7 +113,10 @@ db.runCommand({
 					description: "must be a string and is required"
 				},
 				sub_categories: {
-					bsonType: "array"
+					bsonType: "array",
+					items: {
+						bsonType: "string"
+					}
 				},
 				parent_categories: {
 					bsonType: "array"

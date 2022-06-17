@@ -42,11 +42,11 @@ let parent_category = db.categories.findOne({
 
 let books = db.books.updateMany(
 	{ categories: category._id.toString() },
-	{ $set: {"categories.$": parent_category._id.toString()}}
+	{ $set: {"categories.$": parent_category._id}}
 );
 
 // This will delete Space Opera category
-// db.categories.deleteOne({"_id": category._id.toString()})
+// db.categories.deleteOne({"_id": category._id})
 
 
 // 5. Sell 3 copies of one book and 2 of another in a single order
