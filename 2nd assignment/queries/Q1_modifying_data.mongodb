@@ -18,6 +18,7 @@ use("2ND_ASSIGNMENT");
 // );
 // session.commitTransaction();
 
+
 // 2. Change the address of a customer.
 db.customers.updateOne(
 	{ name: "Jim Jones", address: "Banegårdsgade 2, 8700 Horsens" },
