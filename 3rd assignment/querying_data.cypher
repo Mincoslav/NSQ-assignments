@@ -17,8 +17,8 @@ WHERE category.name <> 'Science Fiction'
 return book
 
 // Query #5 Average page count by genre
-MATCH (genre:Genre)-[:BELONGS]-()
-RETURN genre.name
+MATCH (genre:Genre)<-[:BELONGS]-(b:Book)
+RETURN genre.name, avg(b.pageCount)
 
 // Query #6 Categories that have no sub-categories
 MATCH (category:Category) WHERE NOT (category) - [:HAS] -> (:Category)
